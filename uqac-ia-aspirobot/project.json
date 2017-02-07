@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+      "Microsoft.Extensions.DependencyInjection": "1.1.0",
+      "Microsoft.Extensions.Options": "1.1.0",
+      "System.IO.Pipes": "4.3.0"
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.1"
+        }
+      },
+      "imports": "dnxcore50"
+
+    }
+  }
+}
