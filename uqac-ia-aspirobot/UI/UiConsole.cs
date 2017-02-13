@@ -16,9 +16,10 @@ namespace uqac_ia_aspirobot.UI
         private readonly IAgBatterySensor _agBatterySensor;
         private readonly IAgVaccumSensor _agVaccumSensor;
         private readonly AgState _agState;
+        private readonly IAgPerformanceSensor _agPerformanceSensor;
 
         public UiConsole(IEnvironment environment, IAgEngineEffector agEngineEffector, IAgPickedSensor agPickedSensor,
-            IAgBatterySensor agBatterySensor, IAgVaccumSensor agVaccumSensor, AgState agState)
+            IAgBatterySensor agBatterySensor, IAgVaccumSensor agVaccumSensor, AgState agState, IAgPerformanceSensor agPerformanceSensor)
         {
             _environment = environment;
             _agEngineEffector = agEngineEffector;
@@ -26,6 +27,7 @@ namespace uqac_ia_aspirobot.UI
             _agBatterySensor = agBatterySensor;
             _agVaccumSensor = agVaccumSensor;
             _agState = agState;
+            _agPerformanceSensor = agPerformanceSensor;
         }
 
         public void SetBackgroundColor(ConsoleColor? color)
@@ -186,10 +188,13 @@ namespace uqac_ia_aspirobot.UI
                 Console.WriteLine("|");
             }
             SetBackgroundColor(bgColor);
+            var nextThink = Math.Max(0, (_agState.LastThinkTime.AddMilliseconds(_agState.ThinkTimeInterval) - DateTime.Now).TotalMilliseconds);
             Console.WriteLine($"Battery: {_agBatterySensor.Spent}");
             Console.WriteLine($"Vaccumed: {_agVaccumSensor.Vaccumed}");
             Console.WriteLine($"Picked: {_agPickedSensor.Picked}");
-            Console.WriteLine($"Think: {_agState.ThinkTimeInterval}ms");
+            Console.WriteLine($"Think Interval: {_agState.ThinkTimeInterval}ms");
+            Console.WriteLine($"Next Think: {nextThink}ms");
+            Console.WriteLine($"Performance: {_agPerformanceSensor.Performance}");
         }
     }
 }

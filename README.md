@@ -71,6 +71,7 @@ FakeEnv implementation starts one thread for the environment and another one for
 
 Agent logic is in `Agent/*.cs`  
 Agent sensors and effectors interfaces are in `Agent/Interfaces/*`  
+Agent sensors that do not directly rely on physical sensors are in `Agent/Sensors/*.cs`  
 Agent FakeEnv client implementation is in `Agent/FakeEnv/*`  
 FakeEnv client, server, protocol and configuration are defined in `Common/*.cs`  
 FakeEnv server implementation is in `Environment/*.cs`  

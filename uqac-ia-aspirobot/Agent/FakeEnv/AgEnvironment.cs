@@ -10,10 +10,11 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv
 {
     public class AgEnvironment : IEnvironment
     {
-        private readonly IAgDustSensor _agDustSensor;
-        private readonly IAgBatterySensor _agBatterySensor;
-        private readonly IAgPickedSensor _agPickedSensor;
-        private readonly IAgVaccumSensor _agVaccumSensor;
+        private IAgDustSensor _agDustSensor;
+        private IAgBatterySensor _agBatterySensor;
+        private IAgPickedSensor _agPickedSensor;
+        private IAgVaccumSensor _agVaccumSensor;
+        private IAgPerformanceSensor _agPerformanceSensor;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -25,19 +26,20 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv
 
         private readonly IDictionary<string, IRoom> _rooms = new Dictionary<string, IRoom>();
 
-        public AgEnvironment(IServiceProvider serviceProvider, ArClient arClient,
-            IAgDustSensor agDustSensor, IAgBatterySensor agBatterySensor, IAgPickedSensor agPickedSensor, IAgVaccumSensor agVaccumSensor)
+        public AgEnvironment(IServiceProvider serviceProvider, ArClient arClient)
         {
             _serviceProvider = serviceProvider;
             _arClient = arClient;
-            _agDustSensor = agDustSensor;
-            _agBatterySensor = agBatterySensor;
-            _agPickedSensor = agPickedSensor;
-            _agVaccumSensor = agVaccumSensor;
         }
 
         public void Setup()
         {
+            _agDustSensor = _serviceProvider.GetService<IAgDustSensor>();
+            _agBatterySensor = _serviceProvider.GetService<IAgBatterySensor>();
+            _agPickedSensor = _serviceProvider.GetService<IAgPickedSensor>();
+            _agVaccumSensor = _serviceProvider.GetService<IAgVaccumSensor>();
+            _agPerformanceSensor = _serviceProvider.GetService<IAgPerformanceSensor>();
+
             _arClient.Setup();
             _width = _arClient.GetEnvWidth();
             _height = _arClient.GetEnvWidth();
@@ -65,6 +67,7 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv
             _agBatterySensor.Update();
             _agPickedSensor.Update();
             _agVaccumSensor.Update();
+            _agPerformanceSensor.Update();
         }
 
         protected string GetKey(int x, int y)

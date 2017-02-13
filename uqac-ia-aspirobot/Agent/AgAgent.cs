@@ -9,6 +9,7 @@ using uqac_ia_aspirobot.Agent.FakeEnv.Effectors;
 using uqac_ia_aspirobot.Agent.FakeEnv.Sensors;
 using uqac_ia_aspirobot.Agent.Interfaces.Effectors;
 using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
+using uqac_ia_aspirobot.Agent.Sensors;
 using uqac_ia_aspirobot.Common;
 using uqac_ia_aspirobot.Extensions;
 using uqac_ia_aspirobot.Interfaces;
@@ -44,6 +45,7 @@ namespace uqac_ia_aspirobot.Agent
             agServices.AddSingleton<IAgBatterySensor, AgBatterySensor>();
             agServices.AddSingleton<IAgVaccumSensor, AgVaccumSensor>();
             agServices.AddSingleton<IAgPickedSensor, AgPickedSensor>();
+            agServices.AddSingleton<IAgPerformanceSensor, AgPerformanceSensor>();
 
             agServices.AddSingleton<IAgVaccumEffector, AgVaccumEffector>();
             agServices.AddSingleton<IAgEngineEffector, AgEngineEffector>();
@@ -127,13 +129,14 @@ namespace uqac_ia_aspirobot.Agent
 
         public void Think()
         {
-            if (_state.LastThinkTime.AddMilliseconds(_state.ThinkTimeInterval) <= DateTime.Now)
+            var now = DateTime.Now;
+            if (_state.LastThinkTime.AddMilliseconds(_state.ThinkTimeInterval) <= now)
             {
                 if (_state.Destination == null && _state.DustyRooms.Any())
                 {
                     _state.Destination = _state.DustyRooms.OrderBy(room => room.Distance(_engineEffector)).First();
                 }
-                _state.LastThinkTime = DateTime.Now;
+                _state.LastThinkTime = now;
             }
         }
 
