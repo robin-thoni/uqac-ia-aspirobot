@@ -14,15 +14,17 @@ namespace uqac_ia_aspirobot.UI
         private readonly AgPickedSensor _agPickedSensor;
         private readonly AgBatterySensor _agBatterySensor;
         private readonly AgVaccumSensor _agVaccumSensor;
+        private readonly AgState _agState;
 
         public UiConsole(IEnvironment environment, AgEngineEffector agEngineEffector, AgPickedSensor agPickedSensor,
-            AgBatterySensor agBatterySensor, AgVaccumSensor agVaccumSensor)
+            AgBatterySensor agBatterySensor, AgVaccumSensor agVaccumSensor, AgState agState)
         {
             _environment = environment;
             _agEngineEffector = agEngineEffector;
             _agPickedSensor = agPickedSensor;
             _agBatterySensor = agBatterySensor;
             _agVaccumSensor = agVaccumSensor;
+            _agState = agState;
         }
 
         public void SetBackgroundColor(ConsoleColor? color)
@@ -74,6 +76,55 @@ namespace uqac_ia_aspirobot.UI
             }
         }
 
+        public void SetForegroundColor(ConsoleColor? color)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Console.ForegroundColor = color.GetValueOrDefault(ConsoleColor.Black);
+            }
+            else
+            {
+                var str = "";
+                if (color == null)
+                {
+                    str = $"{(char)27}[1;39m";
+                }
+                if (color == ConsoleColor.Black)
+                {
+                    str = $"{(char)27}[1;30m";
+                }
+                if (color == ConsoleColor.Red)
+                {
+                    str = $"{(char)27}[1;31m";
+                }
+                if (color == ConsoleColor.Green)
+                {
+                    str = $"{(char)27}[1;32m";
+                }
+                if (color == ConsoleColor.Yellow)
+                {
+                    str = $"{(char)27}[1;33m";
+                }
+                if (color == ConsoleColor.Blue)
+                {
+                    str = $"{(char)27}[1;34m";
+                }
+                if (color == ConsoleColor.Magenta)
+                {
+                    str = $"{(char)27}[1;35m";
+                }
+                if (color == ConsoleColor.Cyan)
+                {
+                    str = $"{(char)27}[1;36m";
+                }
+                if (color == ConsoleColor.Gray)
+                {
+                    str = $"{(char)27}[1;37m";
+                }
+                Console.Write(str);
+            }
+        }
+
         public void Clear()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -118,7 +169,21 @@ namespace uqac_ia_aspirobot.UI
                         color = ConsoleColor.Red;
                     }
                     SetBackgroundColor(color);
-                    Console.Write(_agEngineEffector.IsInPosition(x, y) ? "X" : " ");
+                    var isDest = _agState.Destination?.IsInPosition(x, y) ?? false;
+                    if (_agEngineEffector.IsInPosition(x, y))
+                    {
+                        Console.Write("X");
+                    }
+                    else if (isDest)
+                    {
+                        SetForegroundColor(ConsoleColor.Red);
+                        Console.Write("+");
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                    SetForegroundColor(null);
                     SetBackgroundColor(null);
                 }
                 Console.WriteLine("|");
@@ -127,6 +192,7 @@ namespace uqac_ia_aspirobot.UI
             Console.WriteLine($"Battery: {_agBatterySensor.Spent}");
             Console.WriteLine($"Vaccumed: {_agVaccumSensor.Vaccumed}");
             Console.WriteLine($"Picked: {_agPickedSensor.Picked}");
+            Console.WriteLine($"Think: {_agState.ThinkTimeInterval}ms");
         }
     }
 }

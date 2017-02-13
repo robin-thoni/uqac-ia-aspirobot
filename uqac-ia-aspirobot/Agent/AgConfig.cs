@@ -2,9 +2,11 @@
 {
     public class AgConfig
     {
-        public bool AutoAdjustSleepTime { get; set; }
+        public bool AutoAdjustThinkTimeInterval { get; set; }
 
         public int SleepTime { get; set; }
+
+        public int ThinkTimeInterval { get; set; }
 
         public int StartX { get; set; }
 
@@ -12,7 +14,9 @@
 
         public void CopyTo(AgConfig other)
         {
+            other.AutoAdjustThinkTimeInterval = AutoAdjustThinkTimeInterval;
             other.SleepTime = SleepTime;
+            other.ThinkTimeInterval = ThinkTimeInterval;
             other.StartX = StartX;
             other.StartY = StartY;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using uqac_ia_aspirobot.Agent;
 using uqac_ia_aspirobot.Agent.Effectors;
 using uqac_ia_aspirobot.Common;
 using uqac_ia_aspirobot.Interfaces;
@@ -138,6 +139,11 @@ namespace uqac_ia_aspirobot.Extensions
         public static bool IsInPosition(this AgEngineEffector engine, int x, int y)
         {
             return engine.X == x && engine.Y == y;
+        }
+
+        public static bool IsInPosition(this IRoom room, int x, int y)
+        {
+            return room.X == x && room.Y == y;
         }
 
         public static bool IsInRoom(this AgEngineEffector engine, IRoom room)

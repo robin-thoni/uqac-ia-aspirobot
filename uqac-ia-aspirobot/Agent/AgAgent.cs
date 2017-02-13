@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -73,7 +74,8 @@ namespace uqac_ia_aspirobot.Agent
             _state = state;
             _ui = ui;
             _options = options.Value;
-            _state.SleepTime = _options.SleepTime;
+            _state.LastThinkTime = DateTime.MinValue;
+            _state.ThinkTimeInterval = _options.ThinkTimeInterval;
         }
 
         private void Run()
@@ -85,9 +87,9 @@ namespace uqac_ia_aspirobot.Agent
 
             while (running)
             {
-                if (_state.SleepTime > 0)
+                if (_options.SleepTime > 0)
                 {
-                    Thread.Sleep(_state.SleepTime);
+                    Thread.Sleep(_options.SleepTime);
                 }
                 UpdateSensors();
                 _ui.Update();
@@ -104,26 +106,34 @@ namespace uqac_ia_aspirobot.Agent
 
         public void UpdateState()
         {
-            var dustyRooms = _environment.FindDustyRooms();//TODO Compute average on xx last values
-            if (_options.AutoAdjustSleepTime)
+            if (_options.AutoAdjustThinkTimeInterval)
             {
-                if (dustyRooms.Count > _state.DustyRooms.Count)
+                var dustyRooms = _environment.FindDustyRooms();
+                if ((dustyRooms.Count < _state.DustyRooms.Count || !dustyRooms.Any()) && _state.ThinkTimeInterval < 7500)
                 {
-                    _state.SleepTime += _state.SleepTime / 2;
+                    _state.ThinkTimeInterval += _state.ThinkTimeInterval / 2;
                 }
-                else if (dustyRooms.Count < _state.DustyRooms.Count)
+                else if (dustyRooms.Count > _state.DustyRooms.Count && _state.ThinkTimeInterval > 100)
                 {
-                    _state.SleepTime -= _state.SleepTime / 2;
+                    _state.ThinkTimeInterval -= _state.ThinkTimeInterval / 2;
                 }
+                _state.DustyRooms = dustyRooms;
             }
-            _state.DustyRooms = dustyRooms;
+            else
+            {
+                _state.DustyRooms = _environment.FindDustyRooms();
+            }
         }
 
         public void Think()
         {
-            if (_state.Destination == null && _state.DustyRooms.Any())
+            if (_state.LastThinkTime.AddMilliseconds(_state.ThinkTimeInterval) <= DateTime.Now)
             {
-                _state.Destination = _state.DustyRooms.OrderBy(room => room.Distance(_engineEffector)).First();
+                if (_state.Destination == null && _state.DustyRooms.Any())
+                {
+                    _state.Destination = _state.DustyRooms.OrderBy(room => room.Distance(_engineEffector)).First();
+                }
+                _state.LastThinkTime = DateTime.Now;
             }
         }
 

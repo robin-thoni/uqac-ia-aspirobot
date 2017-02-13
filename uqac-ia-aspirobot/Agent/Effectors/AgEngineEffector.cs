@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using uqac_ia_aspirobot.Extensions;
 
 namespace uqac_ia_aspirobot.Agent.Effectors

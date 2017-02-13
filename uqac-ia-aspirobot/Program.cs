@@ -24,8 +24,7 @@ namespace uqac_ia_aspirobot
                 ActionPropability = 30.0f,
                 AddDustProbability = 50.0f,
                 AddJewelProbability = 50.0f,
-//                RemoveJewelProbability = 50.0f,
-                RemoveJewelProbability = 0,
+                RemoveJewelProbability = 30.0f,
                 SleepTime = 1000
             }, arConfig);
 
@@ -36,7 +35,8 @@ namespace uqac_ia_aspirobot
                 SleepTime = 1000,
                 StartX = 0,
                 StartY = 0,
-                AutoAdjustSleepTime = false
+                AutoAdjustThinkTimeInterval = true,
+                ThinkTimeInterval = 10000
             }, arConfig);
 
             AgAgent.Join();
