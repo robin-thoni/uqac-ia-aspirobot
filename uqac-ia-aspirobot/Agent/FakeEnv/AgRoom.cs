@@ -2,7 +2,7 @@
 using uqac_ia_aspirobot.Extensions;
 using uqac_ia_aspirobot.Interfaces;
 
-namespace uqac_ia_aspirobot.Agent
+namespace uqac_ia_aspirobot.Agent.FakeEnv
 {
     public class AgRoom : IRoom
     {

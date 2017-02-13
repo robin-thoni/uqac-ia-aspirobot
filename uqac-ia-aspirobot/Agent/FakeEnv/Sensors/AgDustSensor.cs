@@ -1,8 +1,9 @@
-﻿using uqac_ia_aspirobot.Interfaces;
+﻿using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
+using uqac_ia_aspirobot.Interfaces;
 
-namespace uqac_ia_aspirobot.Agent
+namespace uqac_ia_aspirobot.Agent.FakeEnv.Sensors
 {
-    public class AgDustSensor
+    public class AgDustSensor : IAgDustSensor
     {
         private readonly AgEnvironment _environment;
 

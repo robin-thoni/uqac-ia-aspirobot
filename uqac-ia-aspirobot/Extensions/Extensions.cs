@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using uqac_ia_aspirobot.Agent;
-using uqac_ia_aspirobot.Agent.Effectors;
+using uqac_ia_aspirobot.Agent.Interfaces.Effectors;
 using uqac_ia_aspirobot.Common;
 using uqac_ia_aspirobot.Interfaces;
 
@@ -116,17 +114,17 @@ namespace uqac_ia_aspirobot.Extensions
             return Math.Abs(room.X - x) + Math.Abs(room.Y - y);
         }
 
-        public static int Distance(this IRoom room, AgEngineEffector effector)
+        public static int Distance(this IRoom room, IAgEngineEffector effector)
         {
             return room.Distance(effector.X, effector.Y);
         }
 
-        public static int Distance(this AgEngineEffector effector, int x, int y)
+        public static int Distance(this IAgEngineEffector effector, int x, int y)
         {
             return Math.Abs(effector.X - x) + Math.Abs(effector.Y - y);
         }
 
-        public static int Distance(this AgEngineEffector effector, IRoom room)
+        public static int Distance(this IAgEngineEffector effector, IRoom room)
         {
             return effector.Distance(room.X, room.Y);
         }
@@ -136,7 +134,7 @@ namespace uqac_ia_aspirobot.Extensions
             return state.HasFlag(RoomState.Dust) && !state.HasFlag(RoomState.Jewel);
         }
 
-        public static bool IsInPosition(this AgEngineEffector engine, int x, int y)
+        public static bool IsInPosition(this IAgEngineEffector engine, int x, int y)
         {
             return engine.X == x && engine.Y == y;
         }
@@ -146,12 +144,12 @@ namespace uqac_ia_aspirobot.Extensions
             return room.X == x && room.Y == y;
         }
 
-        public static bool IsInRoom(this AgEngineEffector engine, IRoom room)
+        public static bool IsInRoom(this IAgEngineEffector engine, IRoom room)
         {
             return engine.IsInPosition(room.X, room.Y);
         }
 
-        public static void Move(this AgEngineEffector engine, int dx, int dy)
+        public static void Move(this IAgEngineEffector engine, int dx, int dy)
         {
             engine.MoveTo(engine.X + dx, engine.Y + dy);
         }

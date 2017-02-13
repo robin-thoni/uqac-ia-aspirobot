@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using uqac_ia_aspirobot.Agent;
-using uqac_ia_aspirobot.Agent.Effectors;
+using uqac_ia_aspirobot.Agent.Interfaces.Effectors;
+using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
 using uqac_ia_aspirobot.Extensions;
 using uqac_ia_aspirobot.Interfaces;
 
@@ -10,14 +11,14 @@ namespace uqac_ia_aspirobot.UI
     public class UiConsole : IUi
     {
         private readonly IEnvironment _environment;
-        private readonly AgEngineEffector _agEngineEffector;
-        private readonly AgPickedSensor _agPickedSensor;
-        private readonly AgBatterySensor _agBatterySensor;
-        private readonly AgVaccumSensor _agVaccumSensor;
+        private readonly IAgEngineEffector _agEngineEffector;
+        private readonly IAgPickedSensor _agPickedSensor;
+        private readonly IAgBatterySensor _agBatterySensor;
+        private readonly IAgVaccumSensor _agVaccumSensor;
         private readonly AgState _agState;
 
-        public UiConsole(IEnvironment environment, AgEngineEffector agEngineEffector, AgPickedSensor agPickedSensor,
-            AgBatterySensor agBatterySensor, AgVaccumSensor agVaccumSensor, AgState agState)
+        public UiConsole(IEnvironment environment, IAgEngineEffector agEngineEffector, IAgPickedSensor agPickedSensor,
+            IAgBatterySensor agBatterySensor, IAgVaccumSensor agVaccumSensor, AgState agState)
         {
             _environment = environment;
             _agEngineEffector = agEngineEffector;

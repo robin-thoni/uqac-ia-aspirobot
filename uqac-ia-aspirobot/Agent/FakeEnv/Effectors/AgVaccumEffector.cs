@@ -1,20 +1,22 @@
-﻿using uqac_ia_aspirobot.Common;
+﻿using uqac_ia_aspirobot.Agent.Interfaces.Effectors;
+using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
+using uqac_ia_aspirobot.Common;
 using uqac_ia_aspirobot.Extensions;
 using uqac_ia_aspirobot.Interfaces;
 
-namespace uqac_ia_aspirobot.Agent.Effectors
+namespace uqac_ia_aspirobot.Agent.FakeEnv.Effectors
 {
-    public class AgVaccumEffector
+    public class AgVaccumEffector : IAgVaccumEffector
     {
-        private readonly AgEngineEffector _engineEffector;
+        private readonly IAgEngineEffector _engineEffector;
         private readonly ArClient _arClient;
         private readonly IEnvironment _environment;
-        private readonly AgBatterySensor _agBatterySensor;
-        private readonly AgVaccumSensor _agVaccumSensor;
-        private readonly AgPickedSensor _agPickedSensor;
+        private readonly IAgBatterySensor _agBatterySensor;
+        private readonly IAgVaccumSensor _agVaccumSensor;
+        private readonly IAgPickedSensor _agPickedSensor;
 
-        public AgVaccumEffector(AgEngineEffector engineEffector, ArClient arClient, IEnvironment environment,
-            AgBatterySensor agBatterySensor, AgVaccumSensor agVaccumSensor, AgPickedSensor agPickedSensor)
+        public AgVaccumEffector(IAgEngineEffector engineEffector, ArClient arClient, IEnvironment environment,
+            IAgBatterySensor agBatterySensor, IAgVaccumSensor agVaccumSensor, IAgPickedSensor agPickedSensor)
         {
             _engineEffector = engineEffector;
             _arClient = arClient;

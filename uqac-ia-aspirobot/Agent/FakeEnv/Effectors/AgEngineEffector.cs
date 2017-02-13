@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
+using uqac_ia_aspirobot.Agent.Interfaces.Effectors;
+using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
 using uqac_ia_aspirobot.Extensions;
 
-namespace uqac_ia_aspirobot.Agent.Effectors
+namespace uqac_ia_aspirobot.Agent.FakeEnv.Effectors
 {
-    public class AgEngineEffector
+    public class AgEngineEffector : IAgEngineEffector
     {
-        private readonly AgBatterySensor _agBatterySensor;
+        private readonly IAgBatterySensor _agBatterySensor;
 
         private readonly AgConfig _options;
 
@@ -13,7 +15,7 @@ namespace uqac_ia_aspirobot.Agent.Effectors
 
         public int Y { get; protected set; }
 
-        public AgEngineEffector(IOptions<AgConfig> options, AgBatterySensor agBatterySensor)
+        public AgEngineEffector(IOptions<AgConfig> options, IAgBatterySensor agBatterySensor)
         {
             _agBatterySensor = agBatterySensor;
             _options = options.Value;

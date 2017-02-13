@@ -3,7 +3,11 @@ using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using uqac_ia_aspirobot.Agent.Effectors;
+using uqac_ia_aspirobot.Agent.FakeEnv;
+using uqac_ia_aspirobot.Agent.FakeEnv.Effectors;
+using uqac_ia_aspirobot.Agent.FakeEnv.Sensors;
+using uqac_ia_aspirobot.Agent.Interfaces.Effectors;
+using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
 using uqac_ia_aspirobot.Common;
 using uqac_ia_aspirobot.Extensions;
 using uqac_ia_aspirobot.Interfaces;
@@ -13,11 +17,14 @@ namespace uqac_ia_aspirobot.Agent
 {
     public class AgAgent
     {
-        private readonly AgDustSensor _agDustSensor;
+        private readonly IAgDustSensor _agDustSensor;
+        private readonly IAgBatterySensor _agBatterySensor;
+        private readonly IAgPickedSensor _agPickedSensor;
+        private readonly IAgVaccumSensor _agVaccumSensor;
 
-        private readonly AgEngineEffector _engineEffector;
+        private readonly IAgEngineEffector _engineEffector;
 
-        private readonly AgVaccumEffector _vaccumEffector;
+        private readonly IAgVaccumEffector _vaccumEffector;
 
         private readonly IEnvironment _environment;
 
@@ -36,13 +43,13 @@ namespace uqac_ia_aspirobot.Agent
             agServices.AddSingleton<AgAgent>();
             agServices.AddSingleton<ArClient>();
 
-            agServices.AddSingleton<AgDustSensor>();
-            agServices.AddSingleton<AgBatterySensor>();
-            agServices.AddSingleton<AgVaccumSensor>();
-            agServices.AddSingleton<AgPickedSensor>();
+            agServices.AddSingleton<IAgDustSensor, AgDustSensor>();
+            agServices.AddSingleton<IAgBatterySensor, AgBatterySensor>();
+            agServices.AddSingleton<IAgVaccumSensor, AgVaccumSensor>();
+            agServices.AddSingleton<IAgPickedSensor, AgPickedSensor>();
 
-            agServices.AddSingleton<AgVaccumEffector>();
-            agServices.AddSingleton<AgEngineEffector>();
+            agServices.AddSingleton<IAgVaccumEffector, AgVaccumEffector>();
+            agServices.AddSingleton<IAgEngineEffector, AgEngineEffector>();
 
             agServices.AddSingleton<IUi, UiConsole>();
             agServices.AddSingleton<IEnvironment, AgEnvironment>();
@@ -63,16 +70,23 @@ namespace uqac_ia_aspirobot.Agent
             _thread.Join();
         }
 
-        public AgAgent(IEnvironment environment, IOptions<AgConfig> options, AgState state, IUi ui,
-            AgDustSensor agDustSensor,
-            AgEngineEffector engineEffector, AgVaccumEffector vaccumEffector)
+        public AgAgent(IOptions<AgConfig> options,
+            IEnvironment environment, AgState state, IUi ui,
+            IAgDustSensor agDustSensor, IAgBatterySensor agBatterySensor, IAgPickedSensor agPickedSensor, IAgVaccumSensor agVaccumSensor,
+            IAgEngineEffector engineEffector, IAgVaccumEffector vaccumEffector)
         {
             _agDustSensor = agDustSensor;
+            _agBatterySensor = agBatterySensor;
+            _agPickedSensor = agPickedSensor;
+            _agVaccumSensor = agVaccumSensor;
+
             _engineEffector = engineEffector;
             _vaccumEffector = vaccumEffector;
+
             _environment = environment;
             _state = state;
             _ui = ui;
+
             _options = options.Value;
             _state.LastThinkTime = DateTime.MinValue;
             _state.ThinkTimeInterval = _options.ThinkTimeInterval;
@@ -102,6 +116,9 @@ namespace uqac_ia_aspirobot.Agent
         public void UpdateSensors()
         {
             _agDustSensor.Update();
+            _agBatterySensor.Update();
+            _agPickedSensor.Update();
+            _agVaccumSensor.Update();
         }
 
         public void UpdateState()
