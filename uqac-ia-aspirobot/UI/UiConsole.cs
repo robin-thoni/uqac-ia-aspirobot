@@ -83,7 +83,7 @@ namespace uqac_ia_aspirobot.UI
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Console.ForegroundColor = color.GetValueOrDefault(ConsoleColor.Black);
+                Console.ForegroundColor = color.GetValueOrDefault(ConsoleColor.White);
             }
             else
             {
