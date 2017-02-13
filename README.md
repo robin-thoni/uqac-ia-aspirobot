@@ -26,10 +26,10 @@ Some behaviors can be configured in Program.cs file:
   - `Width`: Map width
   - `ActionPropability`: Probability that an action occurs in the enviromnent, once per `EnvConfig.SleepTime` (>=0, <=100)
   - `AddDustProbability`: Probability that a dust is added on the map, only when an action is to be taken (>=0, <=100)
-  - `AddJewelProbability`: Probability that a jewel is added on the map, only when an action is to be taken,
-  and `AddDustProbability` does not occur (>=0, <=100)
   - `RemoveJewelProbability`: Probability that a jewel is removed from the map, only when an action is to be taken,
-  and neither `EnvConfig.AddDustProbability` nor `EnvConfig.AddJewelProbability` occur (>=0, <=100)
+  and `EnvConfig.AddDustProbability` does not occur (>=0, <=100)
+  - `AddJewelProbability`: Probability that a jewel is added on the map, only when an action is to be taken,
+  and neither `EnvConfig.AddDustProbability` nor `EnvConfig.RemoveJewelProbability` occur (>=0, <=100)
   - `SleepTime`: Time between each iteration in ms (>=0)
   
 - `AgConfig` (Agent configuration)
@@ -57,9 +57,9 @@ FakeEnv implementation will loop forever (until killed) peforming the following 
 - Sleep: Sleep for `EnvConfig.SleepTime`ms
 - May do something: Randomly choose to do something or not using `EnvConfig.ActionPropability`
     - May add dust on a random location: Randomly choose to do it or not using `EnvConfig.AddDustProbability`
-    - May add a jewel on a random location: Randomly choose to do it or not using `EnvConfig.AddJewelProbability`.
-    Can only happen if no previous action has been done.
     - May remove a jewel from the first room that contains a jewel: Randomly choose to do it or not using `EnvConfig.RemoveJewelProbability`.
+    Can only happen if no previous action has been done.
+    - May add a jewel on a random location: Randomly choose to do it or not using `EnvConfig.AddJewelProbability`.
     Can only happen if no previous action has been done.
 
 Code
