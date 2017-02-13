@@ -8,6 +8,8 @@
 
         public int ThinkTimeInterval { get; set; }
 
+        public float LowPerformance { get; set; }
+
         public int StartX { get; set; }
 
         public int StartY { get; set; }
@@ -17,6 +19,7 @@
             other.AutoAdjustThinkTimeInterval = AutoAdjustThinkTimeInterval;
             other.SleepTime = SleepTime;
             other.ThinkTimeInterval = ThinkTimeInterval;
+            other.LowPerformance = LowPerformance;
             other.StartX = StartX;
             other.StartY = StartY;
         }

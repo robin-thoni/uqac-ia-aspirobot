@@ -36,7 +36,8 @@ namespace uqac_ia_aspirobot
                 StartX = 0,
                 StartY = 0,
                 AutoAdjustThinkTimeInterval = true,
-                ThinkTimeInterval = 10000
+                ThinkTimeInterval = 10000,
+                LowPerformance = -1
             }, arConfig);
 
             AgAgent.Join();

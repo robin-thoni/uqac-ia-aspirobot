@@ -38,6 +38,7 @@ Some behaviors can be configured in Program.cs file:
   - `StartY`: Agent start Y position (>=0, <`EnvConfig.Height`)
   - `AutoAdjustThinkTimeInterval`: Indicate if agent should try to auto adjust think time interval (`AgConfig.ThinkTimeInterval`)
   - `ThinkTimeInterval`: Default think time interval in ms (>=0). This variable controls how often the agent will re-evaluate the situation
+  - `LowPerfomance`: Value that indicate when the performance should be considered as too low. If current performance is less or equal, the agent will bypass `AgConfig.ThinkTimeInterval` and re-evaluate the situation anyway
   
 How it works
 ------------

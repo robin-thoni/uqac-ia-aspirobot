@@ -30,6 +30,7 @@ namespace uqac_ia_aspirobot.Agent
 
         private readonly AgState _state;
         private readonly IUi _ui;
+        private readonly IAgPerformanceSensor _agPerformanceSensor;
 
         private static Thread _thread;
 
@@ -70,7 +71,7 @@ namespace uqac_ia_aspirobot.Agent
         }
 
         public AgAgent(IOptions<AgConfig> options,
-            IEnvironment environment, AgState state, IUi ui,
+            IEnvironment environment, AgState state, IUi ui, IAgPerformanceSensor agPerformanceSensor,
             IAgEngineEffector engineEffector, IAgVaccumEffector vaccumEffector)
         {
             _engineEffector = engineEffector;
@@ -79,6 +80,7 @@ namespace uqac_ia_aspirobot.Agent
             _environment = environment;
             _state = state;
             _ui = ui;
+            _agPerformanceSensor = agPerformanceSensor;
 
             _options = options.Value;
             _state.LastThinkTime = DateTime.MinValue;
@@ -130,7 +132,7 @@ namespace uqac_ia_aspirobot.Agent
         public void Think()
         {
             var now = DateTime.Now;
-            if (_state.LastThinkTime.AddMilliseconds(_state.ThinkTimeInterval) <= now)
+            if (_state.LastThinkTime.AddMilliseconds(_state.ThinkTimeInterval) <= now || _agPerformanceSensor.Performance <= _options.LowPerformance)
             {
                 if (_state.Destination == null && _state.DustyRooms.Any())
                 {
