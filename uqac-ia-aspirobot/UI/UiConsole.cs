@@ -149,11 +149,7 @@ namespace uqac_ia_aspirobot.UI
                 {
                     var state = _environment.GetRoomState(x, y);
                     ConsoleColor? color = null;
-                    if (state == RoomState.Clean)
-                    {
-                        color = null;
-                    }
-                    else if (state == RoomState.Dust)
+                    if (state == RoomState.Dust)
                     {
                         color = ConsoleColor.Gray;
                     }

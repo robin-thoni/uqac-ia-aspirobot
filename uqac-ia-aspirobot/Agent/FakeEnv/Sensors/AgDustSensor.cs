@@ -14,7 +14,6 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv.Sensors
 
         public void Update()
         {
-            _environment.Update();
         }
     }
 }

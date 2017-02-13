@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using uqac_ia_aspirobot.Agent.Interfaces.Sensors;
 using uqac_ia_aspirobot.Common;
 using uqac_ia_aspirobot.Extensions;
 using uqac_ia_aspirobot.Interfaces;
@@ -9,20 +10,30 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv
 {
     public class AgEnvironment : IEnvironment
     {
+        private readonly IAgDustSensor _agDustSensor;
+        private readonly IAgBatterySensor _agBatterySensor;
+        private readonly IAgPickedSensor _agPickedSensor;
+        private readonly IAgVaccumSensor _agVaccumSensor;
+
         private readonly IServiceProvider _serviceProvider;
 
         private readonly ArClient _arClient;
 
-        protected int _width;
+        private int _width;
 
-        protected int _height;
+        private int _height;
 
-        protected readonly IDictionary<string, IRoom> _rooms = new Dictionary<string, IRoom>();
+        private readonly IDictionary<string, IRoom> _rooms = new Dictionary<string, IRoom>();
 
-        public AgEnvironment(IServiceProvider serviceProvider, ArClient arClient)
+        public AgEnvironment(IServiceProvider serviceProvider, ArClient arClient,
+            IAgDustSensor agDustSensor, IAgBatterySensor agBatterySensor, IAgPickedSensor agPickedSensor, IAgVaccumSensor agVaccumSensor)
         {
             _serviceProvider = serviceProvider;
             _arClient = arClient;
+            _agDustSensor = agDustSensor;
+            _agBatterySensor = agBatterySensor;
+            _agPickedSensor = agPickedSensor;
+            _agVaccumSensor = agVaccumSensor;
         }
 
         public void Setup()
@@ -49,6 +60,11 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv
                 room.Update();
                 return true;
             });
+
+            _agDustSensor.Update();
+            _agBatterySensor.Update();
+            _agPickedSensor.Update();
+            _agVaccumSensor.Update();
         }
 
         protected string GetKey(int x, int y)

@@ -11,9 +11,9 @@ namespace uqac_ia_aspirobot.Environment
         private readonly IServiceProvider _serviceProvider;
         private readonly EnvConfig _options;
 
-        protected readonly IDictionary<string, IRoom> _rooms = new Dictionary<string, IRoom>();
+        private readonly IDictionary<string, IRoom> _rooms = new Dictionary<string, IRoom>();
 
-        protected string GetKey(int x, int y)
+        private string GetKey(int x, int y)
         {
             return $"{x},{y}";
         }
@@ -51,6 +51,10 @@ namespace uqac_ia_aspirobot.Environment
         public IRoom GetRoom(int x, int y)
         {
             return _rooms[GetKey(x, y)];
+        }
+
+        public void Update()
+        {
         }
     }
 }

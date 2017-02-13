@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System.IO.Pipes;
 using System.Threading;
 using uqac_ia_aspirobot.Extensions;

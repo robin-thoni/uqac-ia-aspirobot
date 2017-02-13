@@ -1,6 +1,6 @@
 ﻿namespace uqac_ia_aspirobot.Agent.Interfaces.Effectors
 {
-    public interface IAgEngineEffector
+    public interface IAgEngineEffector : IEffector
     {
 
         int X { get; }

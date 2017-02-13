@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,10 +18,6 @@ namespace uqac_ia_aspirobot.Agent
 {
     public class AgAgent
     {
-        private readonly IAgDustSensor _agDustSensor;
-        private readonly IAgBatterySensor _agBatterySensor;
-        private readonly IAgPickedSensor _agPickedSensor;
-        private readonly IAgVaccumSensor _agVaccumSensor;
 
         private readonly IAgEngineEffector _engineEffector;
 
@@ -72,14 +69,8 @@ namespace uqac_ia_aspirobot.Agent
 
         public AgAgent(IOptions<AgConfig> options,
             IEnvironment environment, AgState state, IUi ui,
-            IAgDustSensor agDustSensor, IAgBatterySensor agBatterySensor, IAgPickedSensor agPickedSensor, IAgVaccumSensor agVaccumSensor,
             IAgEngineEffector engineEffector, IAgVaccumEffector vaccumEffector)
         {
-            _agDustSensor = agDustSensor;
-            _agBatterySensor = agBatterySensor;
-            _agPickedSensor = agPickedSensor;
-            _agVaccumSensor = agVaccumSensor;
-
             _engineEffector = engineEffector;
             _vaccumEffector = vaccumEffector;
 
@@ -97,28 +88,20 @@ namespace uqac_ia_aspirobot.Agent
             var running = true;
 
             _environment.Setup();
-            _state.DustyRooms = _environment.FindDustyRoomsWithoutJewel();
+            _state.DustyRooms = new List<IRoom>();
 
             while (running)
             {
-                if (_options.SleepTime > 0)
-                {
-                    Thread.Sleep(_options.SleepTime);
-                }
-                UpdateSensors();
+                _environment.Update();
                 _ui.Update();
                 UpdateState();
                 Think();
                 Work();
+                if (_options.SleepTime > 0)
+                {
+                    Thread.Sleep(_options.SleepTime);
+                }
             }
-        }
-
-        public void UpdateSensors()
-        {
-            _agDustSensor.Update();
-            _agBatterySensor.Update();
-            _agPickedSensor.Update();
-            _agVaccumSensor.Update();
         }
 
         public void UpdateState()

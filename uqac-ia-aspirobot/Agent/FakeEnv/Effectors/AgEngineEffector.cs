@@ -9,8 +9,6 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv.Effectors
     {
         private readonly IAgBatterySensor _agBatterySensor;
 
-        private readonly AgConfig _options;
-
         public int X { get; protected set; }
 
         public int Y { get; protected set; }
@@ -18,9 +16,8 @@ namespace uqac_ia_aspirobot.Agent.FakeEnv.Effectors
         public AgEngineEffector(IOptions<AgConfig> options, IAgBatterySensor agBatterySensor)
         {
             _agBatterySensor = agBatterySensor;
-            _options = options.Value;
-            X = _options.StartX;
-            Y = _options.StartY;
+            X = options.Value.StartX;
+            Y = options.Value.StartY;
         }
 
         public void MoveTo(int x, int y)

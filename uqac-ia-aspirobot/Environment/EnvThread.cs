@@ -94,7 +94,10 @@ namespace uqac_ia_aspirobot.Environment
 
             while (running)
             {
-                Thread.Sleep(_config.SleepTime);
+                if (_config.SleepTime > 0)
+                {
+                    Thread.Sleep(_config.SleepTime);
+                }
                 var action = GenerateAction();
                 if (action == Actions.AddDust || action == Actions.AddJewel)
                 {

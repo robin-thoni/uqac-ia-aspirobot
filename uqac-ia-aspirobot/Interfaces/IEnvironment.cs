@@ -20,5 +20,7 @@ namespace uqac_ia_aspirobot.Interfaces
         int GetHeight();
 
         IRoom GetRoom(int x, int y);
+
+        void Update();
     }
 }
